@@ -5,6 +5,7 @@ public class ModConfig {
     private Boolean BungeeCord = false;
     private Boolean alwaysOfficialUUID = false;
     private Boolean allowBypassProxy = false;
+    private Boolean forceOfflineUUID = false;
 
     private String secret = "";
 
@@ -39,6 +40,15 @@ public class ModConfig {
         String env = System.getenv("FABRIC_PROXY_ALLOW_BYPASS_PROXY");
         if (env == null) {
             return allowBypassProxy;
+        } else {
+            return Boolean.valueOf(env);
+        }
+    }
+
+    public Boolean getForceOfflineUUID() {
+        String env = System.getenv("FABRIC_PROXY_FORCE_OFFLINE_UUID");
+        if (env == null) {
+            return forceOfflineUUID;
         } else {
             return Boolean.valueOf(env);
         }

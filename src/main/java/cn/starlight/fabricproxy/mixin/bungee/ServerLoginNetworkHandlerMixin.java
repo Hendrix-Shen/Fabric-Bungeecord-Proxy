@@ -5,10 +5,9 @@ import cn.starlight.fabricproxy.interfaces.BungeeClientConnection;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import net.minecraft.network.ClientConnection;
-import net.minecraft.network.encryption.PlayerPublicKey;
-import net.minecraft.network.encryption.SignatureVerifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerLoginNetworkHandler;
+import net.minecraft.util.Uuids;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -52,7 +51,10 @@ public abstract class ServerLoginNetworkHandlerMixin {
                 });
             }
             else {
-                this.profile = new GameProfile(((BungeeClientConnection) connection).getSpoofedUUID(), this.profile.getName());
+                this.profile = new GameProfile(FabricProxy.config.getForceOfflineUUID() ?
+                        Uuids.getOfflinePlayerUuid(this.profile.getName()) :
+                        ((BungeeClientConnection) connection).getSpoofedUUID(), this.profile.getName());
+
             }
 
             if (((BungeeClientConnection) connection).getSpoofedProfile() != null) {
